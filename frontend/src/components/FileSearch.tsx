@@ -77,7 +77,7 @@ export const FileSearch: React.FC = () => {
               <FolderSelector
                 selectedFolders={folders}
                 onFoldersSelected={setFolders}
-                placeholder="Select client folders to search"
+                placeholder="Enter folder path (e.g., C:\Clients\Ali)"
               />
             </div>
 

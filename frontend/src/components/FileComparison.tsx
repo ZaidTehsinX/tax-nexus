@@ -279,7 +279,7 @@ export const FileComparison: React.FC = () => {
           <FolderSelector
             selectedFolders={folders}
             onFoldersSelected={setFolders}
-            placeholder="Select client folders to compare"
+            placeholder="Enter folder path (e.g., C:\Clients\Ali)"
           />
         </div>
 
