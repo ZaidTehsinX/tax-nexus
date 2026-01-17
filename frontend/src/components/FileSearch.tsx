@@ -102,12 +102,20 @@ export const FileSearch: React.FC = () => {
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-semibold text-gray-800 text-lg">Search Results</h3>
             {results && (
-              <button
-                onClick={clearResults}
-                className="text-xs text-maroon-600 hover:text-maroon-800 font-medium"
-              >
-                Clear Results
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={clearResults}
+                  className="px-4 py-2 text-sm font-medium text-white bg-maroon-600 hover:bg-maroon-700 rounded-lg transition-colors"
+                >
+                  New Search
+                </button>
+                <button
+                  onClick={() => setResults(null)}
+                  className="px-4 py-2 text-sm font-medium text-maroon-600 bg-maroon-50 hover:bg-maroon-100 rounded-lg transition-colors border border-maroon-200"
+                >
+                  Clear Results
+                </button>
+              </div>
             )}
           </div>
 
@@ -119,18 +127,18 @@ export const FileSearch: React.FC = () => {
           ) : (
             <div className="space-y-4">
               {/* Summary */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-green-600">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4 text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-1">
                     {results.clientsWithFile.length}
                   </div>
-                  <div className="text-xs text-green-700">Have "{results.fileName}"</div>
+                  <div className="text-sm text-green-700 font-medium">Have "{results.fileName}"</div>
                 </div>
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-red-600">
+                <div className="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-lg p-4 text-center">
+                  <div className="text-3xl font-bold text-red-600 mb-1">
                     {results.clientsWithoutFile.length}
                   </div>
-                  <div className="text-xs text-red-700">Missing "{results.fileName}"</div>
+                  <div className="text-sm text-red-700 font-medium">Missing "{results.fileName}"</div>
                 </div>
               </div>
 
@@ -139,8 +147,8 @@ export const FileSearch: React.FC = () => {
                 {/* Clients with file */}
                 {results.clientsWithFile.length > 0 && (
                   <div>
-                    <h4 className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2 flex items-center gap-1">
-                      <CheckCircle className="w-3 h-3" />
+                    <h4 className="text-sm font-semibold text-green-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
                       Clients with file ({results.clientsWithFile.length})
                     </h4>
                     <div className="space-y-1">
@@ -162,8 +170,8 @@ export const FileSearch: React.FC = () => {
                 {/* Clients without file */}
                 {results.clientsWithoutFile.length > 0 && (
                   <div>
-                    <h4 className="text-xs font-semibold text-red-700 uppercase tracking-wide mb-2 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
+                    <h4 className="text-sm font-semibold text-red-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                      <XCircle className="w-4 h-4" />
                       Clients missing file ({results.clientsWithoutFile.length})
                     </h4>
                     <div className="space-y-1">

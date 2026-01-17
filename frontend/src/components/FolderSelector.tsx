@@ -118,22 +118,22 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
         {selectedFolders.length > 0 && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+              <span className="text-sm font-medium text-gray-600 uppercase tracking-wide">
                 Selected ({selectedFolders.length})
               </span>
               <button
                 onClick={clearAll}
                 type="button"
-                className="text-xs text-maroon-600 hover:text-maroon-800 font-medium"
+                className="text-sm text-maroon-600 hover:text-maroon-800 font-medium px-3 py-1 rounded-lg hover:bg-maroon-50 transition-colors"
               >
                 Clear All
               </button>
             </div>
-            <div className="max-h-32 overflow-y-auto space-y-2">
+            <div className="max-h-48 overflow-y-auto space-y-2">
               {selectedFolders.map((folder, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 group hover:border-maroon-300 transition-colors"
+                  className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3.5 group hover:border-maroon-300 transition-colors"
                 >
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <Folder className="w-5 h-5 text-amber-500 flex-shrink-0" />
@@ -141,7 +141,7 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
                       <div className="text-sm font-medium text-gray-800 truncate">
                         {getFolderName(folder)}
                       </div>
-                      <div className="text-xs text-gray-400 truncate font-mono" title={folder}>
+                      <div className="text-xs text-gray-500 truncate font-mono" title={folder}>
                         {folder}
                       </div>
                     </div>

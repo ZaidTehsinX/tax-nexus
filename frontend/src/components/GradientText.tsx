@@ -12,7 +12,7 @@ export const GradientText: React.FC<GradientTextProps> = ({
   className = ''
 }) => {
   return (
-    <h1 className={`text-4xl md:text-5xl font-bold tracking-tight ${className}`}>
+    <h1 className={`text-5xl md:text-6xl font-bold tracking-tight ${className}`}>
       {staticText && <span className="text-gray-800">{staticText}</span>}
       <span className="gradient-text">{animatedText}</span>
     </h1>

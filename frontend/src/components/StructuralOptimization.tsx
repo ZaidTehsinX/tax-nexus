@@ -222,9 +222,9 @@ export const StructuralOptimization: React.FC = () => {
         </div>
 
         {/* Step 3 */}
-        <div className="step-box p-6 border-red-200 bg-red-50/50">
+        <div className="step-box p-6">
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-9 h-9 flex items-center justify-center bg-gradient-to-br from-red-700 to-red-600 text-white text-base font-bold rounded-full shadow-md">
+            <span className="w-9 h-9 flex items-center justify-center bg-gradient-to-br from-maroon-950 to-maroon-800 text-white text-base font-bold rounded-full shadow-md">
               3
             </span>
             <h3 className="font-semibold text-gray-800 text-lg">Delete Return Folders</h3>
@@ -243,7 +243,7 @@ export const StructuralOptimization: React.FC = () => {
               <button
                 onClick={handleStep3}
                 disabled={step3Loading || step3Folders.length === 0}
-                className="btn-primary flex items-center justify-center gap-2 min-w-[220px] bg-red-700 hover:bg-red-800"
+                className="btn-primary flex items-center justify-center gap-2 min-w-[220px]"
               >
                 {step3Loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
