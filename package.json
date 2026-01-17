@@ -1,0 +1,19 @@
+{
+  "name": "tax-nexus",
+  "version": "1.0.0",
+  "description": "Tax Nexus - Client Folder and Tax Returns Management Application for Tehsin Law Associates",
+  "author": "Zaid Tehsin",
+  "license": "MIT",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
