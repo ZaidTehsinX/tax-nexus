@@ -1,46 +1,30 @@
 import React, { useState } from 'react';
-import { FolderOpen, X, Plus, FolderSearch } from 'lucide-react';
+import { FolderOpen, X, Plus, Clipboard, Info } from 'lucide-react';
 
 interface FolderSelectorProps {
   selectedFolders: string[];
   onFoldersSelected: (folders: string[]) => void;
   placeholder?: string;
+  helperText?: string;
 }
 
 export const FolderSelector: React.FC<FolderSelectorProps> = ({
   selectedFolders,
   onFoldersSelected,
-  placeholder = 'Folder path...'
+  placeholder = 'E:\\Clients\\ClientName',
+  helperText
 }) => {
   const [inputPath, setInputPath] = useState('');
+  const [showTip, setShowTip] = useState(false);
 
-  // Check if File System Access API is supported
-  const isFileSystemAccessSupported = 'showDirectoryPicker' in window;
-
-  const handleBrowseFolder = async () => {
+  const handlePasteFromClipboard = async () => {
     try {
-      // Use the File System Access API to open folder picker
-      // @ts-ignore - showDirectoryPicker is not in TypeScript types yet
-      const dirHandle = await window.showDirectoryPicker({
-        mode: 'read'
-      });
-      
-      // Get the folder name from the handle
-      const folderName = dirHandle.name;
-      
-      // Ask user to confirm/complete the path since API doesn't give full path
-      const fullPath = prompt(
-        `Selected folder: "${folderName}"\n\nEnter the full path:`,
-        `C:\\${folderName}`
-      );
-      
-      if (fullPath && !selectedFolders.includes(fullPath)) {
-        onFoldersSelected([...selectedFolders, fullPath]);
+      const text = await navigator.clipboard.readText();
+      if (text && text.trim()) {
+        setInputPath(text.trim());
       }
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
-        console.error('Folder selection failed:', error);
-      }
+    } catch (error) {
+      console.error('Failed to paste from clipboard:', error);
     }
   };
 
@@ -74,7 +58,12 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
+      {/* Helper text */}
+      {helperText && (
+        <p className="text-xs text-gray-500 italic">{helperText}</p>
+      )}
+      
       {/* Input for folder path */}
       <div className="flex gap-2">
         <div className="relative flex-1">
@@ -88,16 +77,14 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
             className="input-field pl-10 pr-4 text-sm"
           />
         </div>
-        {isFileSystemAccessSupported && (
-          <button
-            onClick={handleBrowseFolder}
-            type="button"
-            className="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors flex items-center text-sm border border-gray-300"
-            title="Browse for folder"
-          >
-            <FolderSearch className="w-4 h-4" />
-          </button>
-        )}
+        <button
+          onClick={handlePasteFromClipboard}
+          type="button"
+          className="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors flex items-center text-sm border border-gray-300"
+          title="Paste path from clipboard"
+        >
+          <Clipboard className="w-4 h-4" />
+        </button>
         <button
           onClick={handleAddFolder}
           disabled={!inputPath.trim()}
@@ -106,6 +93,28 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
           <Plus className="w-4 h-4" />
           Add
         </button>
+      </div>
+
+      {/* Tip about folder paths */}
+      <div className="relative">
+        <button
+          onClick={() => setShowTip(!showTip)}
+          className="text-xs text-maroon-600 hover:text-maroon-800 flex items-center gap-1"
+        >
+          <Info className="w-3 h-3" />
+          How to get folder path?
+        </button>
+        {showTip && (
+          <div className="mt-2 p-3 bg-gray-50 rounded-lg text-xs text-gray-600 border border-gray-200">
+            <p className="font-medium mb-1">To copy a folder path:</p>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Open File Explorer and navigate to your folder</li>
+              <li>Click on the address bar (or press Ctrl+L)</li>
+              <li>Copy the path (Ctrl+C)</li>
+              <li>Paste it here using the clipboard button</li>
+            </ol>
+          </div>
+        )}
       </div>
 
       {/* Selected folders list */}
