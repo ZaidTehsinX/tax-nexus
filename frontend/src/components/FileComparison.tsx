@@ -239,15 +239,15 @@ export const FileComparison: React.FC = () => {
         Return Comparison
       </h2>
 
-      <div className="step-box">
-        <h3 className="font-semibold text-gray-800 mb-4">Compare Two Return Files</h3>
-        <p className="text-sm text-gray-600 mb-4">
+      <div className="step-box p-6">
+        <h3 className="font-semibold text-gray-800 text-lg mb-3">Compare Two Return Files</h3>
+        <p className="text-sm text-gray-600 mb-5 leading-relaxed">
           Compare which clients have specific returns filed. Searches inside the "Returns" subfolder of each selected client folder.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               First File Name
             </label>
             <input
@@ -259,7 +259,7 @@ export const FileComparison: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Second File Name
             </label>
             <input
@@ -272,8 +272,8 @@ export const FileComparison: React.FC = () => {
           </div>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <div className="mb-5">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Client Folders
           </label>
           <FolderSelector
@@ -282,21 +282,23 @@ export const FileComparison: React.FC = () => {
           />
         </div>
 
-        <button
-          onClick={handleCompare}
-          disabled={loading || folders.length === 0 || !fileName1.trim() || !fileName2.trim()}
-          className="btn-primary w-full flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <GitCompare className="w-4 h-4" />
-          )}
-          {loading ? 'Comparing...' : 'Compare Files'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={handleCompare}
+            disabled={loading || folders.length === 0 || !fileName1.trim() || !fileName2.trim()}
+            className="btn-primary flex items-center justify-center gap-2 min-w-[180px]"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <GitCompare className="w-4 h-4" />
+            )}
+            {loading ? 'Comparing...' : 'Compare Files'}
+          </button>
+        </div>
 
         {!showResults && (
-          <div className="flex flex-col items-center justify-center py-8 mt-4 border-t border-gray-200 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-8 mt-5 border-t border-gray-200 text-gray-400">
             <Users className="w-10 h-10 mb-2 opacity-50" />
             <p className="text-sm">Comparison results will appear here</p>
           </div>

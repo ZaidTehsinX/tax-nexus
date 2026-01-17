@@ -50,12 +50,12 @@ export const FileSearch: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Search Panel */}
-        <div className="step-box">
-          <h3 className="font-semibold text-gray-800 mb-4">Search Parameters</h3>
+        <div className="step-box p-6">
+          <h3 className="font-semibold text-gray-800 text-lg mb-5">Search Parameters</h3>
           
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 File Name
               </label>
               <input
@@ -65,13 +65,13 @@ export const FileSearch: React.FC = () => {
                 placeholder="e.g., Return 2024"
                 className="input-field"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 mt-1.5">
                 Searches for PDF files containing this name
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Client Folders
               </label>
               <FolderSelector
@@ -80,25 +80,27 @@ export const FileSearch: React.FC = () => {
               />
             </div>
 
-            <button
-              onClick={handleSearch}
-              disabled={loading || folders.length === 0 || !fileName.trim()}
-              className="btn-primary w-full flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Search className="w-4 h-4" />
-              )}
-              {loading ? 'Searching...' : 'Search Files'}
-            </button>
+            <div className="flex justify-center pt-2">
+              <button
+                onClick={handleSearch}
+                disabled={loading || folders.length === 0 || !fileName.trim()}
+                className="btn-primary flex items-center justify-center gap-2 min-w-[180px]"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Search className="w-4 h-4" />
+                )}
+                {loading ? 'Searching...' : 'Search Files'}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Results Panel */}
-        <div className="step-box">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-800">Search Results</h3>
+        <div className="step-box p-6">
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="font-semibold text-gray-800 text-lg">Search Results</h3>
             {results && (
               <button
                 onClick={clearResults}
