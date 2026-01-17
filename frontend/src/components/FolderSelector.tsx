@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Folder, X } from 'lucide-react';
+import { Folder, X, FolderTree } from 'lucide-react';
 import FolderBrowser from './FolderBrowser';
+import toast from 'react-hot-toast';
 
 interface FolderSelectorProps {
   selectedFolders: string[];
@@ -12,12 +13,53 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
   onFoldersSelected
 }) => {
   const [showBrowser, setShowBrowser] = useState(false);
+  const [showSubfolderBrowser, setShowSubfolderBrowser] = useState(false);
+  const [loadingSubfolders, setLoadingSubfolders] = useState(false);
 
   const handleFolderSelected = (path: string) => {
     if (!selectedFolders.includes(path)) {
       onFoldersSelected([...selectedFolders, path]);
     }
     setShowBrowser(false);
+  };
+
+  const handleSelectAllSubfolders = async (path: string) => {
+    setShowSubfolderBrowser(false);
+    setLoadingSubfolders(true);
+    
+    try {
+      const response = await fetch('/api/list-dirs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to get subfolders');
+      }
+      
+      const data = await response.json();
+      const subfolderPaths = data.folders.map((f: { path: string }) => f.path);
+      
+      if (subfolderPaths.length === 0) {
+        toast.error('No subfolders found in selected folder');
+        return;
+      }
+      
+      // Add all subfolders that aren't already selected
+      const newFolders = subfolderPaths.filter((p: string) => !selectedFolders.includes(p));
+      if (newFolders.length > 0) {
+        onFoldersSelected([...selectedFolders, ...newFolders]);
+        toast.success(`Added ${newFolders.length} folder(s)`);
+      } else {
+        toast.info('All subfolders already selected');
+      }
+    } catch (error) {
+      console.error('Error fetching subfolders:', error);
+      toast.error('Failed to get subfolders');
+    } finally {
+      setLoadingSubfolders(false);
+    }
   };
 
   const removeFolder = (index: number) => {
@@ -43,6 +85,13 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
         />
       )}
 
+      {showSubfolderBrowser && (
+        <FolderBrowser
+          onSelectFolder={handleSelectAllSubfolders}
+          onClose={() => setShowSubfolderBrowser(false)}
+        />
+      )}
+
       <div className="space-y-3">
         {/* Select Folder Button */}
         <button
@@ -52,6 +101,17 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
         >
           <Folder className="w-5 h-5" />
           {selectedFolders.length === 0 ? 'Select Folder' : 'Add Another Folder'}
+        </button>
+
+        {/* Select All Subfolders Button */}
+        <button
+          onClick={() => setShowSubfolderBrowser(true)}
+          type="button"
+          disabled={loadingSubfolders}
+          className="w-full py-3 px-4 border-2 border-dashed border-maroon-300 rounded-lg hover:border-maroon-500 hover:bg-maroon-50 transition-all text-maroon-600 hover:text-maroon-800 font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FolderTree className="w-5 h-5" />
+          {loadingSubfolders ? 'Loading...' : 'Select All Subfolders'}
         </button>
 
         {/* Selected folders list */}
