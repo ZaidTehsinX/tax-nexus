@@ -146,112 +146,115 @@ export const StructuralOptimization: React.FC = () => {
         Structural Optimization
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="space-y-4">
         {/* Step 1 */}
-        <div className="step-box flex flex-col">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-7 h-7 flex items-center justify-center bg-maroon-950 text-white text-sm font-bold rounded">
+        <div className="step-box">
+          <div className="flex items-start gap-4">
+            <span className="w-10 h-10 flex items-center justify-center bg-maroon-950 text-white text-lg font-bold rounded-lg flex-shrink-0">
               1
             </span>
-            <h3 className="font-semibold text-gray-800">Create Returns Folder</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4 flex-1">
-            Creates a "Returns" folder inside each selected client folder if it doesn't already exist.
-          </p>
-          
-          <div className="space-y-3">
-            <FolderSelector
-              selectedFolders={step1Folders}
-              onFoldersSelected={setStep1Folders}
-              placeholder="Folder path..."
-            />
-            
-            <button
-              onClick={handleStep1}
-              disabled={step1Loading || step1Folders.length === 0}
-              className="btn-primary w-full flex items-center justify-center gap-2"
-            >
-              {step1Loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <FolderPlus className="w-4 h-4" />
-              )}
-              {step1Loading ? 'Creating...' : 'Create Returns Folders'}
-            </button>
-            
-            <ResultBadge result={step1Result} />
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-800 text-lg mb-1">Create Returns Folder</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Creates a "Returns" folder inside each selected client folder if it doesn't already exist.
+              </p>
+              
+              <div className="space-y-3">
+                <FolderSelector
+                  selectedFolders={step1Folders}
+                  onFoldersSelected={setStep1Folders}
+                />
+                
+                <button
+                  onClick={handleStep1}
+                  disabled={step1Loading || step1Folders.length === 0}
+                  className="btn-primary flex items-center justify-center gap-2"
+                >
+                  {step1Loading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <FolderPlus className="w-4 h-4" />
+                  )}
+                  {step1Loading ? 'Creating...' : 'Create Returns Folders'}
+                </button>
+                
+                <ResultBadge result={step1Result} />
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Step 2 */}
-        <div className="step-box flex flex-col">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-7 h-7 flex items-center justify-center bg-maroon-950 text-white text-sm font-bold rounded">
+        <div className="step-box">
+          <div className="flex items-start gap-4">
+            <span className="w-10 h-10 flex items-center justify-center bg-maroon-950 text-white text-lg font-bold rounded-lg flex-shrink-0">
               2
             </span>
-            <h3 className="font-semibold text-gray-800">Move Return Files</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4 flex-1">
-            Finds all PDF files with "Return" in the name and moves them to the Returns folder.
-          </p>
-          
-          <div className="space-y-3">
-            <FolderSelector
-              selectedFolders={step2Folders}
-              onFoldersSelected={setStep2Folders}
-              placeholder="Folder path..."
-            />
-            
-            <button
-              onClick={handleStep2}
-              disabled={step2Loading || step2Folders.length === 0}
-              className="btn-primary w-full flex items-center justify-center gap-2"
-            >
-              {step2Loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <FileOutput className="w-4 h-4" />
-              )}
-              {step2Loading ? 'Moving...' : 'Move Return Files'}
-            </button>
-            
-            <ResultBadge result={step2Result} />
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-800 text-lg mb-1">Move Return Files</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Finds all PDF files with "Return" in the name and moves them to the Returns folder.
+              </p>
+              
+              <div className="space-y-3">
+                <FolderSelector
+                  selectedFolders={step2Folders}
+                  onFoldersSelected={setStep2Folders}
+                />
+                
+                <button
+                  onClick={handleStep2}
+                  disabled={step2Loading || step2Folders.length === 0}
+                  className="btn-primary flex items-center justify-center gap-2"
+                >
+                  {step2Loading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <FileOutput className="w-4 h-4" />
+                  )}
+                  {step2Loading ? 'Moving...' : 'Move Return Files'}
+                </button>
+                
+                <ResultBadge result={step2Result} />
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Step 3 */}
-        <div className="step-box flex flex-col">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-7 h-7 flex items-center justify-center bg-maroon-950 text-white text-sm font-bold rounded">
+        <div className="step-box border-red-200 bg-red-50/30">
+          <div className="flex items-start gap-4">
+            <span className="w-10 h-10 flex items-center justify-center bg-red-700 text-white text-lg font-bold rounded-lg flex-shrink-0">
               3
             </span>
-            <h3 className="font-semibold text-gray-800">Delete Return Folders</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4 flex-1">
-            Permanently deletes all folders named "Return" inside the selected folders.
-          </p>
-          
-          <div className="space-y-3">
-            <FolderSelector
-              selectedFolders={step3Folders}
-              onFoldersSelected={setStep3Folders}
-              placeholder="Folder path..."
-            />
-            
-            <button
-              onClick={handleStep3}
-              disabled={step3Loading || step3Folders.length === 0}
-              className="btn-primary w-full flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800"
-            >
-              {step3Loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Trash2 className="w-4 h-4" />
-              )}
-              {step3Loading ? 'Deleting...' : 'Delete Return Folders'}
-            </button>
-            
-            <ResultBadge result={step3Result} />
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-800 text-lg mb-1">Delete Return Folders</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Permanently deletes all folders named "Return" inside the selected folders.
+              </p>
+              
+              <div className="space-y-3">
+                <FolderSelector
+                  selectedFolders={step3Folders}
+                  onFoldersSelected={setStep3Folders}
+                />
+                
+                <button
+                  onClick={handleStep3}
+                  disabled={step3Loading || step3Folders.length === 0}
+                  className="btn-primary flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800"
+                >
+                  {step3Loading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-4 h-4" />
+                  )}
+                  {step3Loading ? 'Deleting...' : 'Delete Return Folders'}
+                </button>
+                
+                <ResultBadge result={step3Result} />
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -77,7 +77,6 @@ export const FileSearch: React.FC = () => {
               <FolderSelector
                 selectedFolders={folders}
                 onFoldersSelected={setFolders}
-                placeholder="Folder path..."
               />
             </div>
 
