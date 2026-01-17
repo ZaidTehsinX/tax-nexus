@@ -163,7 +163,7 @@ export const StructuralOptimization: React.FC = () => {
             <FolderSelector
               selectedFolders={step1Folders}
               onFoldersSelected={setStep1Folders}
-              placeholder="Enter folder path (e.g., C:\Clients\Ali)"
+              placeholder="Folder path..."
             />
             
             <button
@@ -199,7 +199,7 @@ export const StructuralOptimization: React.FC = () => {
             <FolderSelector
               selectedFolders={step2Folders}
               onFoldersSelected={setStep2Folders}
-              placeholder="Enter folder path (e.g., C:\Clients\Ali)"
+              placeholder="Folder path..."
             />
             
             <button
@@ -235,7 +235,7 @@ export const StructuralOptimization: React.FC = () => {
             <FolderSelector
               selectedFolders={step3Folders}
               onFoldersSelected={setStep3Folders}
-              placeholder="Enter folder path (e.g., C:\Clients\Ali)"
+              placeholder="Folder path..."
             />
             
             <button

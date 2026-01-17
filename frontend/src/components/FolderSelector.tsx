@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FolderOpen, X, Plus } from 'lucide-react';
+import { FolderOpen, X, Plus, FolderSearch } from 'lucide-react';
 
 interface FolderSelectorProps {
   selectedFolders: string[];
@@ -10,9 +10,39 @@ interface FolderSelectorProps {
 export const FolderSelector: React.FC<FolderSelectorProps> = ({
   selectedFolders,
   onFoldersSelected,
-  placeholder = 'Enter folder path (e.g., C:\\Clients\\Ali)'
+  placeholder = 'Folder path...'
 }) => {
   const [inputPath, setInputPath] = useState('');
+
+  // Check if File System Access API is supported
+  const isFileSystemAccessSupported = 'showDirectoryPicker' in window;
+
+  const handleBrowseFolder = async () => {
+    try {
+      // Use the File System Access API to open folder picker
+      // @ts-ignore - showDirectoryPicker is not in TypeScript types yet
+      const dirHandle = await window.showDirectoryPicker({
+        mode: 'read'
+      });
+      
+      // Get the folder name from the handle
+      const folderName = dirHandle.name;
+      
+      // Ask user to confirm/complete the path since API doesn't give full path
+      const fullPath = prompt(
+        `Selected folder: "${folderName}"\n\nEnter the full path:`,
+        `C:\\${folderName}`
+      );
+      
+      if (fullPath && !selectedFolders.includes(fullPath)) {
+        onFoldersSelected([...selectedFolders, fullPath]);
+      }
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error('Folder selection failed:', error);
+      }
+    }
+  };
 
   const handleAddFolder = () => {
     const trimmedPath = inputPath.trim();
@@ -58,6 +88,16 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
             className="input-field pl-10 pr-4 text-sm"
           />
         </div>
+        {isFileSystemAccessSupported && (
+          <button
+            onClick={handleBrowseFolder}
+            type="button"
+            className="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors flex items-center text-sm border border-gray-300"
+            title="Browse for folder"
+          >
+            <FolderSearch className="w-4 h-4" />
+          </button>
+        )}
         <button
           onClick={handleAddFolder}
           disabled={!inputPath.trim()}
