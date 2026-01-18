@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Search, Loader2, CheckCircle, XCircle, Users } from 'lucide-react';
+import { Search, Loader2, CheckCircle, XCircle, Users, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
 import FolderSelector from './FolderSelector';
 import { searchFiles } from '../api';
 import { SearchFilesResponse } from '../types';
+import { exportSearchResultsToPDF } from '../utils/pdfExport';
 
 export const FileSearch: React.FC = () => {
   const [folders, setFolders] = useState<string[]>([]);
   const [fileName, setFileName] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<SearchFilesResponse | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   const handleSearch = async () => {
     if (folders.length === 0) {
@@ -39,6 +41,24 @@ export const FileSearch: React.FC = () => {
     setResults(null);
     setFolders([]);
     setFileName('');
+  };
+
+  const handleExportPDF = async () => {
+    if (!results) {
+      toast.error('No results to export');
+      return;
+    }
+
+    setExporting(true);
+    try {
+      await exportSearchResultsToPDF(
+        results.fileName,
+        results.clientsWithFile,
+        results.clientsWithoutFile
+      );
+    } finally {
+      setExporting(false);
+    }
   };
 
   return (
@@ -103,6 +123,18 @@ export const FileSearch: React.FC = () => {
             <h3 className="font-semibold text-gray-800 text-lg">Search Results</h3>
             {results && (
               <div className="flex gap-2">
+                <button
+                  onClick={handleExportPDF}
+                  disabled={exporting}
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400 rounded-lg transition-colors"
+                >
+                  {exporting ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
+                  {exporting ? 'Exporting...' : 'Export PDF'}
+                </button>
                 <button
                   onClick={clearResults}
                   className="px-4 py-2 text-sm font-medium text-white bg-maroon-600 hover:bg-maroon-700 rounded-lg transition-colors"

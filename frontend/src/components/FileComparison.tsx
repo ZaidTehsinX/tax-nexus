@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { GitCompare, Loader2, CheckCircle, XCircle, MinusCircle, Users, ArrowLeft } from 'lucide-react';
+import { GitCompare, Loader2, CheckCircle, XCircle, MinusCircle, Users, ArrowLeft, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
 import FolderSelector from './FolderSelector';
 import { compareFiles } from '../api';
 import { CompareFilesResponse } from '../types';
+import { exportComparisonResultsToPDF } from '../utils/pdfExport';
 
 export const FileComparison: React.FC = () => {
   const [folders, setFolders] = useState<string[]>([]);
@@ -12,6 +13,7 @@ export const FileComparison: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<CompareFilesResponse | null>(null);
   const [showResults, setShowResults] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const handleCompare = async () => {
     if (folders.length === 0) {
@@ -49,6 +51,27 @@ export const FileComparison: React.FC = () => {
     setFileName2('');
   };
 
+  const handleExportPDF = async () => {
+    if (!results) {
+      toast.error('No results to export');
+      return;
+    }
+
+    setExporting(true);
+    try {
+      await exportComparisonResultsToPDF(
+        results.fileName1,
+        results.fileName2,
+        results.hasBoth,
+        results.hasFile1Only,
+        results.hasFile2Only,
+        results.hasNeither
+      );
+    } finally {
+      setExporting(false);
+    }
+  };
+
   // Comparison Results View
   if (showResults && results) {
     return (
@@ -66,6 +89,18 @@ export const FileComparison: React.FC = () => {
             </h2>
           </div>
           <div className="flex gap-2">
+            <button
+              onClick={handleExportPDF}
+              disabled={exporting}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400 rounded-lg transition-colors"
+            >
+              {exporting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              {exporting ? 'Exporting...' : 'Export PDF'}
+            </button>
             <button
               onClick={clearAll}
               className="px-4 py-2 text-sm font-medium text-white bg-maroon-600 hover:bg-maroon-700 rounded-lg transition-colors"
