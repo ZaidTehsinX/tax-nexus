@@ -52,7 +52,7 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
         onFoldersSelected([...selectedFolders, ...newFolders]);
         toast.success(`Added ${newFolders.length} folder(s)`);
       } else {
-        toast.info('All subfolders already selected');
+        toast.success('All subfolders already selected');
       }
     } catch (error) {
       console.error('Error fetching subfolders:', error);
